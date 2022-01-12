@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import bg from './background5.png'
+
+import'./fonts/NotoSans_bold.woff'
+import'./fonts/NotoSans_regular.woff'
 
 const width = 1400
 const height = 788
@@ -30,6 +34,7 @@ const padding = 3;
 
 
 function App() {
+  const [canvas, setCanvas] = useState(null)
   const [rankData, setRankData] = useState({} as any)
   // contextを状態として持つ
   const [context, setContext] = useState(null)
@@ -37,6 +42,8 @@ function App() {
   const [loaded, setLoaded] = useState(false)
 
   const [rendering, setRendering] = useState(false);
+
+  const [png, setPng] = useState<string | null>(null)
 
   // 集計シートからデータ取得
   const fetchData = async () => {
@@ -48,15 +55,18 @@ function App() {
 
   // コンポーネントの初期化完了後コンポーネント状態にコンテキストを登録
   useEffect(() => {
-    const canvas = document.getElementById("canvas")
+    const canvas: any = document.createElement("canvas")
+    canvas.height = height
+    canvas.width = width
     const canvasContext = (canvas as any).getContext("2d")
+    setCanvas(canvas)
     setContext(canvasContext)
   }, [])
   // 状態にコンテキストが登録されたらそれに対して操作できる
   useEffect(() => {
     if (context !== null) {
       const img = new Image()
-      img.src = "https://tone-personal-public-bucket.s3.ap-northeast-1.amazonaws.com/background5.png" // 描画する画像など
+      img.src = bg
       img.onload = () => {
         const ctx = (context as any);
         ctx.drawImage(img, 0, 0)
@@ -73,26 +83,25 @@ function App() {
     }
   }, [loaded])
   useEffect(() => {
-    console.log(Object.keys(rankData).length > 0 && !rendering)
     if (Object.keys(rankData).length > 0 && !rendering) {
       setRendering(true);
       // console.log(rankData)
       const values = rankData.values;
       const ctx: CanvasRenderingContext2D = (context as any);
       ctx.fillStyle = 'white'
-      ctx.font = "30px 'Noto Sans JP'"
+      ctx.font = "30px 'NotoSansJP'"
       ctx.fillText(values[0][0], 50, 47, 900)
 
       ctx.fillStyle = 'white'
-      ctx.font = "30px 'Noto Sans JP'"
+      ctx.font = "30px 'NotoSansJP'"
       ctx.fillText(values[0][2], 700, 47, 900)
 
       ctx.fillStyle = 'white'
-      ctx.font = "30px 'Noto Sans JP'"
+      ctx.font = "30px 'NotoSansJP'"
       ctx.fillText(values[0][3], 970, 47, 900)
 
       ctx.fillStyle = 'white'
-      ctx.font = "30px 'Noto Sans JP'"
+      ctx.font = "30px 'NotoSansJP'"
       ctx.fillText(values[0][4], 1190, 47, 900)
 
       for(let i=0; i<8;i++) {
@@ -114,51 +123,65 @@ function App() {
         ctx.fillRect(originX + rowHeight + padding, originY + padding, 1204, rowHeight - 2 * padding)
 
         ctx.fillStyle = 'white'
-        ctx.font = "60px 'Noto Sans JP'"
+        ctx.font = "60px 'NotoSansJp'"
         ctx.textAlign = 'center'
         ctx.textBaseline = "middle"
         ctx.fillText(`${i + 1}`, originX + rowHeight / 2, originY + rowHeight / 2, rowHeight - 2 * padding)
 
         ctx.fillStyle = 'white'
-        ctx.font = "900 40px 'Noto Sans JP'"
+        ctx.font = "40px 'NotoSansJPBold'"
         ctx.textAlign = 'center'
         ctx.textBaseline = "middle"
         ctx.fillText(values[i+1][1], originX + rowHeight + padding * 3 + 247, originY + rowHeight / 2, 495)
 
         ctx.fillStyle = 'white'
-        ctx.font = "60px 'Noto Sans JP'"
+        ctx.font = "60px 'NotoSansJP'"
         ctx.textAlign = 'right'
         ctx.textBaseline = "middle"
         ctx.fillText(`${values[i+1][2]}`, originX + rowHeight / 2 + 795, originY + rowHeight / 2, 300)
 
         if (parseInt(values[i+1][5]) > 0) {
           ctx.fillStyle = 'green'
-          ctx.font = "900 60px 'Noto Sans JP'"
+          ctx.font = "60px 'NotoSansJPBold'"
           ctx.textAlign = 'right'
           ctx.textBaseline = "middle"
           ctx.fillText('∧', originX + rowHeight / 2 + 855, originY + rowHeight / 2, 300)
         } else if (parseInt(values[i+1][5]) < 0){
           ctx.fillStyle = 'red'
-          ctx.font = "900 60px 'Noto Sans JP'"
+          ctx.font = "60px 'NotoSansJPBold'"
           ctx.textAlign = 'right'
           ctx.textBaseline = "middle"
           ctx.fillText('∨', originX + rowHeight / 2 + 855, originY + rowHeight / 2, 300)
         }
 
         ctx.fillStyle = 'white'
-        ctx.font = "40px 'Noto Sans JP'"
+        ctx.font = "40px 'NotoSansJP'"
         ctx.textAlign = 'right'
         ctx.textBaseline = "middle"
         ctx.fillText(`${values[i+1][3]}`, originX + rowHeight / 2 + 995, originY + rowHeight / 2, 200)
 
         ctx.fillStyle = 'white'
-        ctx.font = "30px 'Noto Sans JP'"
+        ctx.font = "30px 'NotoSansJP'"
         ctx.textAlign = 'right'
         ctx.textBaseline = "middle"
         ctx.fillText(`${values[i+1][4]}`, originX + rowHeight / 2 + 1195, originY + rowHeight / 2, 200)
       }
+
+      setPng((canvas as any).toDataURL());
     }
   }, [rankData])
-  return <canvas width={width} height={height} id="canvas"></canvas>
+  return <div>
+    <span style={
+      {
+        fontFamily: 'NotoSansJp'
+      }
+    }>フォント読み込み用</span>
+    <span style={
+      {
+        fontFamily: 'NotoSansJpBold'
+      }
+    }>フォント読み込み用</span>
+    <img src={png as any} alt="" />
+  </div>
 }
 export default App

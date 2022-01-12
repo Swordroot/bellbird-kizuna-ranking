@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'NotoSansJp';
+  font-weight: 'normal';
+  src: url('./fonts/NotoSans_regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'NotoSansJpBold';
+  src: url('./fonts/NotoSans_bold.woff') format('woff');
+}
+
+
+  
