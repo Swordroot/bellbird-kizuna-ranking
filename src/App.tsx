@@ -140,13 +140,13 @@ function App() {
         ctx.textBaseline = "middle"
         ctx.fillText(`${values[i+1][2]}`, originX + rowHeight / 2 + 795, originY + rowHeight / 2, 300)
 
-        if (parseInt(values[i+1][5]) > 0) {
+        if (parseFloat(values[i+1][5]) > 0) {
           ctx.fillStyle = 'green'
           ctx.font = "60px 'NotoSansJPBold'"
           ctx.textAlign = 'right'
           ctx.textBaseline = "middle"
           ctx.fillText('∧', originX + rowHeight / 2 + 855, originY + rowHeight / 2, 300)
-        } else if (parseInt(values[i+1][5]) < 0){
+        } else if (parseFloat(values[i+1][5]) < 0){
           ctx.fillStyle = 'red'
           ctx.font = "60px 'NotoSansJPBold'"
           ctx.textAlign = 'right'
