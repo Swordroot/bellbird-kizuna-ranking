@@ -113,7 +113,7 @@ function App() {
         ctx.fillRect(originX + padding, originY + padding, rowHeight - 2 * padding, rowHeight - 2 * padding)
 
         console.log(parseInt(values[i+1][6])-1)
-        const teamColor = values[i+1][7].split(',').map((str: string) => parseInt(str)).reduce((acc, current, index) => {
+        const teamColor = values[i+1][7].split(',').map((str: string) => parseInt(str)).reduce((acc: {r: number, g: number, b: number}, current: number, index: number) => {
           switch (index) {
             case 0:
               acc.r = current;
