@@ -113,7 +113,23 @@ function App() {
         ctx.fillRect(originX + padding, originY + padding, rowHeight - 2 * padding, rowHeight - 2 * padding)
 
         console.log(parseInt(values[i+1][6])-1)
-        const teamColor = teamColors[parseInt(values[i+1][6])-1]
+        const teamColor = values[i+1][7].split(',').map((str: string) => parseInt(str)).reduce((acc, current, index) => {
+          switch (index) {
+            case 0:
+              acc.r = current;
+              break;
+            case 1:
+              acc.g = current;
+              break;
+            case 2:
+              acc.b = current;
+              break;
+            default:
+              break;
+          }
+          return acc
+        }, {r:0,g:0,b:0})
+        // const teamColor = teamColors[parseInt(values[i+1][6])-1]
         const gradient = ctx.createLinearGradient(originX + rowHeight + padding, originY, 1300, originY);
         gradient.addColorStop(0.0, `rgb(${teamColor.r},${teamColor.g},${teamColor.b}, 1.0)`)
         gradient.addColorStop(0.45, `rgb(${teamColor.r},${teamColor.g},${teamColor.b}, 1.0)`)
